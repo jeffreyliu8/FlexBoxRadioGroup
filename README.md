@@ -1,5 +1,6 @@
 # FlexBoxRadioGroup
 A radiogroup based on FlexboxLayout https://github.com/google/flexbox-layout
+Inspired by https://github.com/mrHerintsoaHasina/flextools, however, this lib's min sdk is 17, not 14. And not working well for me. So I build this new one.
 
 
 [![](https://jitpack.io/v/jeffreyliu8/FlexBoxRadioGroup.svg)](https://jitpack.io/#jeffreyliu8/FlexBoxRadioGroup)
