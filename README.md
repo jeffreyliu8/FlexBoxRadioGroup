@@ -26,7 +26,7 @@ Using FlexBoxRadioGroup
 ##### Dependencies
 ```groovy
 	dependencies {
-	        implementation 'com.github.jeffreyliu8:FlexBoxRadioGroup:0.0.3'
+	        implementation 'com.github.jeffreyliu8:FlexBoxRadioGroup:0.0.4'
 	}
 ```
 
