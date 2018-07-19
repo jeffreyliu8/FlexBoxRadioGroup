@@ -61,7 +61,7 @@ Using FlexBoxRadioGroup
 ````
 Check out MainActivity.java on how to use it in code. Very simple.
 
-![Output sample](https://github.com/jeffreyliu8/LLog/blob/master/screenshot.png)
+![Output sample](https://github.com/jeffreyliu8/FlexBoxRadioGroup/blob/master/screenshot.png)
 
 Requirements
 --------------
