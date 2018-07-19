@@ -4,19 +4,20 @@ import android.os.Bundle;
 import android.support.design.internal.FlexboxLayout;
 import android.support.design.widget.FloatingActionButton;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.RadioButton;
 
 import com.askjeffreyliu.flexboxradiogroup.FlexBoxRadioGroup;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String TAG = "MainActivity";
     private FlexBoxRadioGroup myRadioGroup;
+    private RadioButton rb1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,41 +27,28 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         myRadioGroup = findViewById(R.id.radioGroup);
+        rb1 = findViewById(R.id.rb_1);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-
                 FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(FlexBoxRadioGroup.LayoutParams.WRAP_CONTENT, FlexBoxRadioGroup.LayoutParams.WRAP_CONTENT);
-                RadioButton radioButton = new RadioButton(MainActivity.this);
-                radioButton.setText(R.string.app_name);
-                myRadioGroup.addView(radioButton, 0, params);
+                RadioButton rb = new RadioButton(MainActivity.this);
+                rb.setText(R.string.app_name);
+                myRadioGroup.addView(rb, 0, params);
             }
         });
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        myRadioGroup.setOnCheckedChangeListener(new FlexBoxRadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(FlexBoxRadioGroup group, int checkedId) {
+                Log.d(TAG, "onCheckedChanged: " + checkedId);
+                if (myRadioGroup.getCheckedRadioButtonId() == rb1.getId()) {
+                    Snackbar.make(myRadioGroup, "You clicked on RB1", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            }
+        });
     }
 }
