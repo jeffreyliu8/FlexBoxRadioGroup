@@ -9,6 +9,7 @@
     tools:showIn="@layout/activity_main">
 
     <com.askjeffreyliu.flexboxradiogroup.FlexBoxRadioGroup
+        android:id="@+id/radioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:alignContent="space_around"

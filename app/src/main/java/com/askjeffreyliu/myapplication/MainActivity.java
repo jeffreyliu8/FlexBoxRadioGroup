@@ -1,30 +1,43 @@
 package com.askjeffreyliu.myapplication;
 
 import android.os.Bundle;
+import android.support.design.internal.FlexboxLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.RadioGroup;
+import android.widget.RadioButton;
+
+import com.askjeffreyliu.flexboxradiogroup.FlexBoxRadioGroup;
+
 
 public class MainActivity extends AppCompatActivity {
+
+    private FlexBoxRadioGroup myRadioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        myRadioGroup = findViewById(R.id.radioGroup);
+
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+
+                FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(FlexBoxRadioGroup.LayoutParams.WRAP_CONTENT, FlexBoxRadioGroup.LayoutParams.WRAP_CONTENT);
+                RadioButton radioButton = new RadioButton(MainActivity.this);
+                radioButton.setText(R.string.app_name);
+                myRadioGroup.addView(radioButton, 0, params);
             }
         });
     }

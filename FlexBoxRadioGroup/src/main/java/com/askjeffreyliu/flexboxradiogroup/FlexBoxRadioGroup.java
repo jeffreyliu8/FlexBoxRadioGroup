@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayout;
 
 public class FlexBoxRadioGroup extends FlexboxLayout {
@@ -34,7 +35,7 @@ public class FlexBoxRadioGroup extends FlexboxLayout {
      */
     public FlexBoxRadioGroup(Context context) {
         super(context);
-
+        setFlexDirection(FlexDirection.ROW);
         init();
     }
 
