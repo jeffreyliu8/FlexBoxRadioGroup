@@ -8,6 +8,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -24,7 +26,7 @@ public class FlexBoxRadioGroup extends FlexboxLayout {
     private CompoundButton.OnCheckedChangeListener mChildOnCheckedChangeListener;
     // when true, mOnCheckedChangeListener discards events
     private boolean mProtectFromCheckedChange = false;
-    private OnCheckedChangeListener mOnCheckedChangeListener;
+    private FlexBoxRadioGroup.OnCheckedChangeListener mOnCheckedChangeListener;
     private PassThroughHierarchyChangeListener mPassThroughListener;
 
     /**
@@ -149,6 +151,7 @@ public class FlexBoxRadioGroup extends FlexboxLayout {
      * Upon empty selection, the returned value is -1.</p>
      *
      * @return the unique id of the selected radio button in this group
+     * @attr ref android.R.styleable#RadioGroup_checkedButton
      * @see #check(int)
      * @see #clearCheck()
      */
@@ -174,7 +177,7 @@ public class FlexBoxRadioGroup extends FlexboxLayout {
      *
      * @param listener the callback to call on checked state change
      */
-    public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
+    public void setOnCheckedChangeListener(FlexBoxRadioGroup.OnCheckedChangeListener listener) {
         mOnCheckedChangeListener = listener;
     }
 
@@ -182,7 +185,7 @@ public class FlexBoxRadioGroup extends FlexboxLayout {
      * {@inheritDoc}
      */
 //    @Override
-//    public LayoutParams generateLayoutParams(AttributeSet attrs) {
+//    public FlexBoxRadioGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
 //        return new FlexBoxRadioGroup.LayoutParams(getContext(), attrs);
 //    }
 
@@ -196,7 +199,19 @@ public class FlexBoxRadioGroup extends FlexboxLayout {
 
     @Override
     protected LinearLayout.LayoutParams generateDefaultLayoutParams() {
-        return new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        return new FlexBoxRadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    @Override
+    public void onInitializeAccessibilityEvent(AccessibilityEvent event) {
+        super.onInitializeAccessibilityEvent(event);
+        event.setClassName(RadioGroup.class.getName());
+    }
+
+    @Override
+    public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
+        super.onInitializeAccessibilityNodeInfo(info);
+        info.setClassName(RadioGroup.class.getName());
     }
 
     /**
