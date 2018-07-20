@@ -7,7 +7,7 @@ Inspired by https://github.com/mrHerintsoaHasina/flextools, however, this lib's 
 
 Why FlexBoxRadioGroup
 ----------------
-Are you tired of having your RadioGroup as just a LinearLayout? FlexBoxRadioGroup can arrange your RadioButton to a new line when screen is not wide enough.
+Are you tired of having your RadioGroup as just a LinearLayout? Are you frustrated that you can't build your own custom RadioButton? Worry no more!
 
 Using FlexBoxRadioGroup
 ----------------
@@ -26,10 +26,10 @@ Using FlexBoxRadioGroup
 ##### Dependencies
 ```groovy
 	dependencies {
-	        implementation 'com.github.jeffreyliu8:FlexBoxRadioGroup:0.0.4'
+	        implementation 'com.github.jeffreyliu8:FlexBoxRadioGroup:0.0.6'
 	}
 ```
-FlexBoxRadioGroup is for RadioButton and AppCompatRadioButton
+FlexBoxRadioGroup is for RadioButton and AppCompatRadioButton (Typical case, no custom RadioButton)
 ````xml
     <com.askjeffreyliu.flexboxradiogroup.FlexBoxRadioGroup
         android:id="@+id/radioGroup"
@@ -55,7 +55,8 @@ FlexBoxRadioGroup is for RadioButton and AppCompatRadioButton
 ````
 Check out MainActivity.java on how to use it in code. Very simple.
 
-For advnace developer, you might want to customize RadioButton(which means you can use inflate custom layout, RadioButton is not a ViewGroup therefore you can't call addView() and inflate layout), you can use FlexBoxSingleCheckableGroup and CustomizableRadioButton. You can extend CustomizableRadioButton to build your own RadioButton
+For advnace developer, you might want to customize RadioButton(which means you can inflate custom layout, RadioButton is NOT a ViewGroup therefore you can't call addView() and inflate layout)
+Use FlexBoxSingleCheckableGroup and CustomizableRadioButton. You can extend CustomizableRadioButton to build your own RadioButton, or just specify the background drawable for different states, see selector_horizontal.xml for more detail.
 ````xml
      <com.askjeffreyliu.flexboxradiogroup.FlexBoxSingleCheckableGroup
         android:id="@+id/singleGroup"
@@ -78,7 +79,6 @@ For advnace developer, you might want to customize RadioButton(which means you c
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="test 3" />
-
 
         <com.askjeffreyliu.flexboxradiogroup.CustomizableRadioButton
             android:id="@+id/test"
