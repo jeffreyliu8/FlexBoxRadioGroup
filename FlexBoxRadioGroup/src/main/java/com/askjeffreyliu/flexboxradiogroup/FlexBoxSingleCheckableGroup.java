@@ -2,14 +2,13 @@ package com.askjeffreyliu.flexboxradiogroup;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-
 import android.util.AttributeSet;
-
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Checkable;
 import android.widget.CompoundButton;
 
 import android.widget.RadioButton;
@@ -18,22 +17,25 @@ import android.widget.RadioGroup;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayout;
 
-public class FlexBoxRadioGroup extends FlexboxLayout {
+import java.lang.reflect.Method;
 
 
+public class FlexBoxSingleCheckableGroup extends FlexboxLayout {
+
+    private static final String TAG = "FlexBoxSingleCheckableG";
     // holds the checked id; the selection is empty by default
     private int mCheckedId = -1;
     // tracks children radio buttons checked state
     private CompoundButton.OnCheckedChangeListener mChildOnCheckedChangeListener;
     // when true, mOnCheckedChangeListener discards events
     private boolean mProtectFromCheckedChange = false;
-    private FlexBoxRadioGroup.OnCheckedChangeListener mOnCheckedChangeListener;
+    private FlexBoxSingleCheckableGroup.OnCheckedChangeListener mOnCheckedChangeListener;
     private PassThroughHierarchyChangeListener mPassThroughListener;
 
     /**
      * {@inheritDoc}
      */
-    public FlexBoxRadioGroup(Context context) {
+    public FlexBoxSingleCheckableGroup(Context context) {
         super(context);
         setFlexDirection(FlexDirection.ROW);
         init();
@@ -42,7 +44,7 @@ public class FlexBoxRadioGroup extends FlexboxLayout {
     /**
      * {@inheritDoc}
      */
-    public FlexBoxRadioGroup(Context context, AttributeSet attrs) {
+    public FlexBoxSingleCheckableGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         // retrieve selected radio button as requested by the user in the
@@ -90,21 +92,34 @@ public class FlexBoxRadioGroup extends FlexboxLayout {
         }
     }
 
-    @Override
-    public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        if (child instanceof RadioButton) {
-            final RadioButton button = (RadioButton) child;
-            if (button.isChecked()) {
+
+    public void addView(View child, int index, ViewGroup.LayoutParams params, boolean isChecked) {
+        if (child instanceof Checkable) {
+
+            if (isChecked) {
                 mProtectFromCheckedChange = true;
                 if (mCheckedId != -1) {
                     setCheckedStateForView(mCheckedId, false);
                 }
                 mProtectFromCheckedChange = false;
-                setCheckedId(button.getId());
+                setCheckedId(child.getId());
             }
         }
 
         super.addView(child, index, params);
+//        if (child instanceof RadioButton) {
+//            final RadioButton button = (RadioButton) child;
+//            if (button.isChecked()) {
+//                mProtectFromCheckedChange = true;
+//                if (mCheckedId != -1) {
+//                    setCheckedStateForView(mCheckedId, false);
+//                }
+//                mProtectFromCheckedChange = false;
+//                setCheckedId(button.getId());
+//            }
+//        }
+//
+//        super.addView(child, index, params);
     }
 
     /**
@@ -142,8 +157,14 @@ public class FlexBoxRadioGroup extends FlexboxLayout {
 
     private void setCheckedStateForView(int viewId, boolean checked) {
         View checkedView = findViewById(viewId);
-        if (checkedView != null && checkedView instanceof RadioButton) {
-            ((RadioButton) checkedView).setChecked(checked);
+        if (checkedView != null && checkedView instanceof Checkable) {
+            try {
+                Method m = checkedView.getClass()
+                        .getMethod("setChecked", boolean.class);
+                m.invoke(checkedView, checked);
+            } catch (Exception e) {
+                Log.e(TAG, "");
+            }
         }
     }
 
@@ -178,7 +199,7 @@ public class FlexBoxRadioGroup extends FlexboxLayout {
      *
      * @param listener the callback to call on checked state change
      */
-    public void setOnCheckedChangeListener(FlexBoxRadioGroup.OnCheckedChangeListener listener) {
+    public void setOnCheckedChangeListener(FlexBoxSingleCheckableGroup.OnCheckedChangeListener listener) {
         mOnCheckedChangeListener = listener;
     }
 
@@ -200,7 +221,7 @@ public class FlexBoxRadioGroup extends FlexboxLayout {
 
     @Override
     protected FlexboxLayout.LayoutParams generateDefaultLayoutParams() {
-        return new FlexBoxRadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
+        return new FlexBoxSingleCheckableGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
     }
 
     @Override
@@ -258,8 +279,8 @@ public class FlexBoxRadioGroup extends FlexboxLayout {
 
         /**
          * <p>Fixes the child's width to
-         * {@link android.view.ViewGroup.LayoutParams#WRAP_CONTENT} and the child's
-         * height to  {@link android.view.ViewGroup.LayoutParams#WRAP_CONTENT}
+         * {@link ViewGroup.LayoutParams#WRAP_CONTENT} and the child's
+         * height to  {@link ViewGroup.LayoutParams#WRAP_CONTENT}
          * when not specified in the XML file.</p>
          *
          * @param a          the styled attributes set
@@ -296,7 +317,7 @@ public class FlexBoxRadioGroup extends FlexboxLayout {
          * @param group     the group in which the checked radio button has changed
          * @param checkedId the unique identifier of the newly checked radio button
          */
-        void onCheckedChanged(FlexBoxRadioGroup group, int checkedId);
+        void onCheckedChanged(FlexBoxSingleCheckableGroup group, int checkedId);
     }
 
     private class CheckedStateTracker implements CompoundButton.OnCheckedChangeListener {
@@ -323,22 +344,27 @@ public class FlexBoxRadioGroup extends FlexboxLayout {
      * hierarchy change listener without preventing the user to setup his.</p>
      */
     private class PassThroughHierarchyChangeListener implements
-            ViewGroup.OnHierarchyChangeListener {
-        private ViewGroup.OnHierarchyChangeListener mOnHierarchyChangeListener;
+            OnHierarchyChangeListener {
+        private OnHierarchyChangeListener mOnHierarchyChangeListener;
 
         /**
          * {@inheritDoc}
          */
         public void onChildViewAdded(View parent, View child) {
-            if (parent == FlexBoxRadioGroup.this && child instanceof RadioButton) {
+            if (parent == FlexBoxSingleCheckableGroup.this && child instanceof Checkable) {
                 int id = child.getId();
                 // generates an id if it's missing
                 if (id == View.NO_ID) {
                     id = child.hashCode();
                     child.setId(id);
                 }
-                ((RadioButton) child).setOnCheckedChangeListener(
-                        mChildOnCheckedChangeListener);
+                try {
+                    Method m = child.getClass()
+                            .getMethod("setOnCheckedChangeListener", CompoundButton.OnCheckedChangeListener.class);
+                    m.invoke(child, mChildOnCheckedChangeListener);
+                } catch (Exception e) {
+                    Log.e(TAG, "");
+                }
             }
 
             if (mOnHierarchyChangeListener != null) {
@@ -350,8 +376,15 @@ public class FlexBoxRadioGroup extends FlexboxLayout {
          * {@inheritDoc}
          */
         public void onChildViewRemoved(View parent, View child) {
-            if (parent == FlexBoxRadioGroup.this && child instanceof RadioButton) {
+            if (parent == FlexBoxSingleCheckableGroup.this && child instanceof Checkable) {
                 ((RadioButton) child).setOnCheckedChangeListener(null);
+                try {
+                    Method m = child.getClass()
+                            .getMethod("setOnCheckedChangeListener", CompoundButton.OnCheckedChangeListener.class);
+                    m.invoke(child, (Object[]) null);
+                } catch (Exception e) {
+                    Log.e(TAG, "");
+                }
             }
 
             if (mOnHierarchyChangeListener != null) {

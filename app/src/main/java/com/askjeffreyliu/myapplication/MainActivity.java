@@ -12,12 +12,15 @@ import android.view.View;
 import android.widget.RadioButton;
 
 import com.askjeffreyliu.flexboxradiogroup.FlexBoxRadioGroup;
+import com.askjeffreyliu.flexboxradiogroup.FlexBoxSingleCheckableGroup;
 
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private FlexBoxRadioGroup myRadioGroup;
+    private FlexBoxSingleCheckableGroup checkableGroup;
     private RadioButton rb1;
+    private MyRadioButton myRadioButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +30,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         myRadioGroup = findViewById(R.id.radioGroup);
+        checkableGroup = findViewById(R.id.singleGroup);
         rb1 = findViewById(R.id.rb_1);
+        myRadioButton = findViewById(R.id.myradiobutton1);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +51,18 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onCheckedChanged: " + checkedId);
                 if (myRadioGroup.getCheckedRadioButtonId() == rb1.getId()) {
                     Snackbar.make(myRadioGroup, "You clicked on RB1", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                            .show();
+                }
+            }
+        });
+
+        checkableGroup.setOnCheckedChangeListener(new FlexBoxSingleCheckableGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(FlexBoxSingleCheckableGroup group, int checkedId) {
+                Log.d(TAG, "onCheckedChanged: " + checkedId);
+                if (checkableGroup.getCheckedRadioButtonId() == myRadioButton.getId()) {
+                    Snackbar.make(checkableGroup, "You clicked on a custom radio button", Snackbar.LENGTH_LONG)
+                            .show();
                 }
             }
         });
