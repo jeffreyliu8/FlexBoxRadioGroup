@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:text="RB 7" />
 
-        <RadioButton
+        <android.support.v7.widget.AppCompatRadioButton
             android:id="@+id/rb_8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
