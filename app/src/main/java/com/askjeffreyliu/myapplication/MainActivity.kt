@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             radioGroup.addView(rb, 0, params)
         }
 
-        radioGroup.setOnCheckedChangeListener { group, checkedId ->
+        radioGroup.setOnCheckedChangeListener { _, checkedId ->
             Log.d(TAG, "onCheckedChanged: $checkedId")
             if (radioGroup.checkedRadioButtonId == rb1.id) {
                 Snackbar.make(radioGroup, "You clicked on RB1", Snackbar.LENGTH_LONG)
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        singleGroup.setOnCheckedChangeListener { group, checkedId ->
+        singleGroup.setOnCheckedChangeListener { _, checkedId ->
             Log.d(TAG, "onCheckedChanged: $checkedId")
             if (singleGroup.checkedRadioButtonId == myradiobutton1.id) {
                 Snackbar.make(singleGroup, "You clicked on a custom radio button", Snackbar.LENGTH_LONG)
