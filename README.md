@@ -26,7 +26,7 @@ Using FlexBoxRadioGroup
 ##### Dependencies
 ```groovy
 	dependencies {
-	        implementation 'com.github.jeffreyliu8:FlexBoxRadioGroup:0.0.7'
+	        implementation 'com.github.jeffreyliu8:FlexBoxRadioGroup:0.0.8'
 	}
 ```
 FlexBoxRadioGroup is for RadioButton and AppCompatRadioButton (Typical case, no custom RadioButton)
