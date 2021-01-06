@@ -50,7 +50,7 @@ public class FlexBoxRadioGroup extends FlexboxLayout {
         TypedArray attributes = context.obtainStyledAttributes(
                 attrs, R.styleable.FlexBoxRadioGroup);
 
-        int value = attributes.getResourceId(R.styleable.FlexBoxRadioGroup_checkedButton, View.NO_ID);
+        int value = attributes.getResourceId(R.styleable.FlexBoxRadioGroup_uiCheckedButton, View.NO_ID);
         if (value != View.NO_ID) {
             mCheckedId = value;
         }
